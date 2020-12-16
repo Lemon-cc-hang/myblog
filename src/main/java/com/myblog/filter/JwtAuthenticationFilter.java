@@ -3,7 +3,7 @@ package com.myblog.filter;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.myblog.common.lang.RspData;
+import com.myblog.common.dto.Status;
 import com.myblog.config.CustomConfig;
 import com.myblog.service.impl.CustomUserDetailsServiceImpl;
 import com.myblog.utils.JwtUtil;
@@ -57,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StrUtil.isNotBlank(jwt)) {
             try {
                 // 从 jwt 中获得 username
-                String username = jwtUtil.getUsernameFromJWT(jwt);
+                String username = jwtUtil.getUsernameFromJwt(jwt);
 
                 // 获得 用户的详细信息
                 UserDetails userDetails = customUserDetailsServiceImpl.loadUserByUsername(username);
@@ -72,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 ResponseUtil.renderJson(response, e);
             }
         } else {
-            ResponseUtil.renderJson(response, RspData.RSP_CODE_UNAUTHORIZED, null, null);
+            ResponseUtil.renderJson(response, Status.BAD_REQUEST, null);
         }
     }
 

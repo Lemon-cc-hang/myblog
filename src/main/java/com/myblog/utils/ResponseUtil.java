@@ -2,6 +2,7 @@ package com.myblog.utils;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.myblog.common.dto.Status;
 import com.myblog.common.lang.RspData;
 import com.myblog.controller.BlogsController;
 import org.slf4j.Logger;
@@ -20,18 +21,17 @@ public class ResponseUtil {
      * 往 response 写出 json
      *
      * @param response 响应
-     * @param code     状态码
-     * @param msg      信息
+     * @param status   状态
      * @param data     返回数据
      */
-    public static void renderJson(HttpServletResponse response, int code, String msg, Object data) {
+    public static void renderJson(HttpServletResponse response, Status status, Object data) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setHeader("Access-Control-Allow-Methods", "*");
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(200);
 
-            response.getWriter().write(JSONUtil.toJsonStr(new JSONObject(RspData.success(code, msg, data), false)));
+            response.getWriter().write(JSONUtil.toJsonStr(new JSONObject(new RspData(status, data), false)));
         } catch (IOException e) {
             logger.error("Response写出JSON异常，", e);
         }

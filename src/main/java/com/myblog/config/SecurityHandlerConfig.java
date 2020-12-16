@@ -1,6 +1,6 @@
 package com.myblog.config;
 
-import com.myblog.common.lang.RspData;
+import com.myblog.common.dto.Status;
 import com.myblog.utils.ResponseUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +15,6 @@ public class SecurityHandlerConfig {
 
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
-        return ((httpServletRequest, httpServletResponse, e) -> ResponseUtil.renderJson(httpServletResponse, RspData.RSP_CODE_ACCESS_DENIED, null, null));
+        return ((httpServletRequest, httpServletResponse, e) -> ResponseUtil.renderJson(httpServletResponse, Status.ACCESS_DENIED, null));
     }
 }
