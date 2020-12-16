@@ -1,5 +1,7 @@
 package com.myblog.common.lang;
 
+import com.myblog.common.dto.IStatus;
+import com.myblog.common.dto.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,47 +24,7 @@ public class RspData implements Serializable {
     /**
      * 增删改失败
      */
-    public static final int RSP_CODE__ERROR = 201;
-
-    /**
-     * 查询为空
-     */
-    public static final int RSP_CODE__SELECT_NULL = 202;
-
-    /**
-     * 用户名密码错误
-     */
-    public static final int RSP_CODE__CHECK_ERROR = 301;
-
-    /**
-     * 用户不存在
-     */
-    public static final int RSP_CODE__USER_NOT_FOUND = 307;
-
-    /**
-     * 已存在
-     */
-    public static final int RSP_CODE_IS_EXIST = 313;
-
-    /**
-     * 规则不正确
-     */
-    public static final int RSP_CODE_RULE_IS_ERROR = 314;
-
-    /**
-     * 不可用
-     */
-    public static final int RSP_CODE_NOT_AVAILABLE = 315;
-
-    /**
-     * 参数为空
-     */
-    public static final int RSP_CODE_ISEMPTY_PARAMETER = 701;
-
-    /**
-     * 无效参数
-     */
-    public static final int RSP_CODE_INVALID_PARAMETER = 702;
+    public static final int RSP_CODE__ERROR = 400;
 
     /**
      * 状态码
@@ -88,6 +50,14 @@ public class RspData implements Serializable {
         this(rspCode, rspMsg, null);
     }
 
+    public RspData(IStatus status, Object data) {
+        this(status.getCode(), status.getMessage(), data);
+    }
+
+    public RspData(IStatus status) {
+        this(status.getCode(), status.getMessage());
+    }
+
     public static RspData success() {
         return success(null);
     }
@@ -100,13 +70,8 @@ public class RspData implements Serializable {
         return new RspData(code, msg, data);
     }
 
-    /**
-     * meiyou quanxian 
-     * @param msg
-     * @return
-     */
-    public static RspData noPermissions(String msg) {
-        return error(401, msg, null);
+    public static RspData noPermissions() {
+        return new RspData(Status.ACCESS_DENIED);
     }
 
     public static RspData error(int errCode) {
@@ -137,12 +102,8 @@ public class RspData implements Serializable {
         return new RspData(errCode, msg, null);
     }
 
-    public static RspData unknown() {
-        return new RspData(101, null, null);
-    }
-
     public static RspData invalidParameter() {
-        return new RspData(102, null, null);
+        return new RspData(Status.PARAM_NOT_MATCH);
     }
 
     public static RspData error(String msg) {
